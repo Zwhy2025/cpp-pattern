@@ -1,3 +1,12 @@
 
+# 临时生成文件
 a.out
+# vscode相关文件
 .vscode/
+
+# 编译生成文件
+build/
+# 可执行文件
+bin/
+# 库文件
+lib/
