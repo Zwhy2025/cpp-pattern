@@ -119,7 +119,7 @@ namespace Pattern
 using namespace Pattern;
 namespace  Observer{
     void run(){
-        std::cout << "*********************** Singleton Pattern Demo ***********************" << std::endl;
+        std::cout << "*********************** Observer Pattern Demo ***********************" << std::endl;
         Stock stock;
         Monitor monitor{&stock};
         Billboard billboard{&stock};
