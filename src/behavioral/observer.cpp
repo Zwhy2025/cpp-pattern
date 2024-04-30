@@ -3,8 +3,10 @@
 #include <mutex>
 
 namespace Pattern
-{
+{   
+    // 前向声明
     class Observer;
+
     class Subject
     {
     public:
@@ -17,6 +19,8 @@ namespace Pattern
         virtual void notify() = 0;
     };
 
+    // 观察们构造注册观察者, 后续流程中可以统一通知观察者
+    // 通知接口与具体动作解耦, 方便扩展
     class Stock : public Subject
     {
     public:
@@ -46,10 +50,13 @@ namespace Pattern
     {
         _tSub->attach(this);
     }
+
     Observer::~Observer()
     {
         _tSub->detach(this);
     }
+
+    // 观测到变化后,观察者们采取的行为子类
     class Monitor : public Observer
     {
     public:
@@ -90,18 +97,21 @@ namespace Pattern
     {
         std::unique_lock<std::mutex> lock(_mutex_p);
         _nPrice = v;
+        std::cout << "Stock modify!" << std::endl;
         this->notify();
     }
 
     void Stock::attach(Observer *o)
     {
         std::unique_lock<std::mutex> lock(_mutex_list);
+        std::cout << "Observer attach: " << __PRETTY_FUNCTION__<<std::endl;
         _listObserver.push_back(o);
     }
 
     void Stock::detach(Observer *o)
     {
         std::unique_lock<std::mutex> lock(_mutex_list);
+        std::cout << "Observer detach: " << __PRETTY_FUNCTION__<<std::endl;
         _listObserver.remove(o);
     }
 
@@ -126,5 +136,8 @@ namespace  Observer{
         stock.setPrice(10);
         stock.setPrice(20);
         stock.attach(&monitor);
+        stock.setPrice(50);
+        stock.detach(&monitor);
+        stock.setPrice(100);
     }
 }
